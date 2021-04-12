@@ -44,47 +44,116 @@ function App() {
   let timeSpentInCurrentSession = 0
   let breakSessionDuration = 5
 
-
-
-
-
-  // useState
+// useState
   const [focusInput, setFocusInput] = useState(focusSessionDuration);
   const [breakInput, setBreakInput] = useState(breakSessionDuration);
-  const [modal, setModal] = useState (true);
-  const [timeOutModal, setTimeOutModal] = useState (true);
-  const [time, setTime] = useState(focusInput);
-  const [isActive, setIsActive] = useState(false);
 
+  const [timer, setTimer] = useState({
+  isActive: false,
+  time: focusInput,
+  timeOutModal: false,
+  modal: false,
+  break: false,
+  button: 'start'
+})
 
+  // const [modal, setModal] = useState (true);
+  // const [timeOutModal, setTimeOutModal] = useState (true);
+  // const [time, setTime] = useState(focusInput);
+  // const [isActive, setIsActive] = useState(false);
+
+const toggleTimer = (event) => {
+  console.log(event)
+  switch (event) {
+    case 'start':
+        setTimer({ 
+          ...timer, 
+          isActive: true, 
+          button: 'pause' 
+        })
+        break
+    case 'pause':
+        setTimer({ 
+          ...timer, 
+          isActive: false, 
+          button: 'start' 
+        })
+        break
+    case 'break':
+        setTimer({
+          ...timer,
+          isActive: true,
+          button: 'pause',
+          break: true,
+          time: breakInput
+        })
+        break
+      case 'reset':
+        setTimer({
+          ...timer,
+          button: 'start',
+          break: false,
+          time: focusInput
+        })
+        break
+      case 'countdown':
+        setTimer({
+          ...timer,
+          button: 'pause',
+          time: timer.time - 1000
+        })
+        break
+      case 'startbreak':
+        setTimer({
+          ...timer,
+          isActive: false,
+          button: 'break'
+        })
+        // alarm.play()
+        break
+      case 'timeout':
+        setTimer({
+          ...timer,
+          isActive: false,
+          timeOutModal:true,
+          button: 'reset'
+        })
+        // work.play()
+        break
+      default:
+        return
+  }
+}
+return [timer, toggleTimer]
+}
   // functions
   const handleChange = (e) =>{
     setFocusInput(e.target.value);
-    setTime(e.target.value*60);
+    setTimer.time(e.target.value*60);
     }
   const handleBreak = (e) =>{
     setBreakInput(e.target.value);
-    setTime(e.target.value*60);
+    setTimer.time(e.target.value*60);
     }
 
   const toggler = () => {
-  setModal(prev => !prev)
+    timer.modal(prev => !prev)
   }
 
   const timeOutToggler = () => {
-    setTimeOutModal(prev => !prev)
+    timer.timeOutModal(prev => !prev)
   }
 
   const triggerTimeOutModal = () => {
-    setTimeOutModal(false)
+    timer.timeOutModal(false)
   }
 
 const closeModal = (event) => {
   const clicked = event.target.id;
-        if (modal !== true && clicked === "modalWrapper"){
-          setModal(prev => !prev);
-        } else if(timeOutModal !== true && clicked === "modalWrapper"){
-          setTimeOutModal(prev => !prev)
+        if (timer.modal !== true && clicked === "modalWrapper"){
+          timer.modal(prev => !prev);
+        } else if(timer.timeOutModal !== true && clicked === "modalWrapper"){
+          timer.timeOutModal(prev => !prev)
         }   
 }
 
@@ -93,8 +162,8 @@ const closeModal = (event) => {
       <GlobalStyles />
 
       <Timer 
-      time={time} 
-      setTime={setTime} 
+      timer={timer} 
+      toggleTimer={toggleTimer}
       focusInput={focusInput} 
       breakInput={breakInput}
       setUserInput={setFocusInput} 
@@ -102,27 +171,24 @@ const closeModal = (event) => {
       handleBreak={handleBreak}
       timeOutToggler={timeOutToggler} 
       triggerTimeOutModal={triggerTimeOutModal}
-      isActive={isActive}
-      setIsActive={setIsActive}
       />
 
       <SettingsBtn toggler={toggler} />
 
       <div style={{width: "100vw", height: "100vh"}} onClick={closeModal} id="modalWrapper">
         <SettingsModal 
-        modal={modal} 
+        modal={timer.modal} 
         focusInput={focusInput} 
         breakInput={breakInput}
         handleChange={handleChange}
         handleBreak={handleBreak}
         />
         <TimeOutModal 
-        timeOutModal={timeOutModal} 
+        timeOutModal={timer.timeOutModal} 
         timeOutToggler={timeOutToggler}
-        setTime={setTime}
+        setTime={timer.time}
         breakInput={breakInput}
-        isActive={isActive}
-        setIsActive={setIsActive}
+        isActive={timer.isActive}
         />
       </div>
     </Background >

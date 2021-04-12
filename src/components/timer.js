@@ -26,61 +26,61 @@ function formatTime(sec) {
   return `${minutes}:${seconds}`;
 }
 
-const Timer = ({focusInput, breakInput, time, setTime, triggerTimeOutModal, timeOutToggler, isActive, setIsActive}) => {
+const Timer = ({focusInput, breakInput, time, triggerTimeOutModal, timeOutToggler, isActive}) => {
   
   const [focus, setFocus] = useState(true);
   
   function toggle() {
-    setIsActive(!isActive);
+    time.isActive(!isActive);
   }
   
   function reset() {
-    setTime(focusInput);
-    setIsActive(false);
+    time(focusInput);
+    time.isActive(false);
   }
   
   useEffect(() => {
     let interval = null;
     //   as long as the timer is active and not 0
-    if (isActive && time > 0) {
+    if (time.isActive && time.time > 0) {
       interval = setInterval(() => {
-        setTime(time => time - 1);
+        time.time(time => time - 1);
       }, 1000);
       
       // pause timer
-    } else if (!isActive && time > 0) {
+    } else if (!time.isActive && time.time > 0) {
       clearInterval(interval);
     }
     // focus timeout
-    else if ( time === 0 && focus === true) {
-      setIsActive(false);
+    else if ( time.time === 0 && focus === true) {
+      time.IsActive(false);
       clearInterval(interval);
       triggerTimeOutModal();
       setFocus(!focus)
-      setTime(breakInput)
+      time.time(breakInput)
     }
     // break timeout
-    else if ( time === 0 && focus === false){
+    else if ( time.time === 0 && focus === false){
       clearInterval(interval);
       setFocus(true)
       triggerTimeOutModal();
-      setTime(focusInput)
+      time.time(focusInput)
       
     }
     
     
     return () => clearInterval(interval);
-  }, [isActive, time, setTime, timeOutToggler, triggerTimeOutModal]);
+  }, [isActive, time, timeOutToggler, triggerTimeOutModal, breakInput, focus, focusInput]);
   
   
   return (
     <div className="app">
     <div className="timer">
-    {formatTime(time)}
+    {formatTime(time.time)}
     </div>
     <div className="actions">
     <Button className="button start" onClick={toggle}>
-    {isActive ? 'Pause' : 'Start'}
+    {time.isActive ? 'Pause' : 'Start'}
     </Button>
     
     <Button className="button reset" onClick={reset}>

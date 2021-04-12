@@ -2,7 +2,7 @@ import React from 'react';
 import styled from "styled-components";
 import settings from '../assets/settings.svg';
 
-const settingsBtn = ({toggler}) => {
+const settingsBtn = ({modalToggler}) => {
     const Icon = styled.img`
     position:absolute;
     bottom:30px;
@@ -10,7 +10,7 @@ const settingsBtn = ({toggler}) => {
 `
 
     return (
-        <Icon src={settings} alt="settings icon" onClick={toggler}></Icon>     
+        <Icon src={settings} alt="settings icon" onClick={modalToggler}></Icon>     
     );
 }
 

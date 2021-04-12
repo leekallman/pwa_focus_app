@@ -36,30 +36,29 @@ input{
 }
 `;
 
-const SettingsModal = ({ modal, handleChange, handleBreak, focusInput, breakInput}) => {
+const SettingsModal = ({ modal, handleChange, handleBreak, focusInput, breakInput }) => {
     return (
-        <Modal className={modal ? "hide" : "show"} id="modal">
-        <ul>
-        <li>
-        <h3>Focus session</h3>
-        <input min={1} type="number" onChange={handleChange} value={focusInput}/>
-        </li>
-        <li>
-        <h3>Short break</h3>
-        <input min={1} type="number" onChange={handleBreak} value={breakInput}/>
-        </li>
-        {/* <li>
+        <Modal className={modal ? "show" : "hide"} id="modal">
+            <ul>
+                <li>
+                    <h3>Focus session</h3>
+                    <input min={1} type="number" onChange={handleChange} value={focusInput} />
+                </li>
+                <li>
+                    <h3>Short break</h3>
+                    <input min={1} type="number" onChange={handleBreak} value={breakInput} />
+                </li>
+                {/* <li>
         <h3>Long break</h3>
         <input min={1} type="number" onChange={handleChange} value={focusInput}/>
         </li> */}
-        <li>
-        <h3>Sessions until Long break</h3>
-        <input min={1} defaultValue={3} type="number"/>
-        </li>
-        </ul>
+                <li>
+                    <h3>Sessions until Long break</h3>
+                    <input min={1} defaultValue={3} type="number" />
+                </li>
+            </ul>
         </Modal>
-        );
-    }
-    
-    export default SettingsModal;
-    
+    );
+}
+
+export default SettingsModal;

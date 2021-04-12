@@ -40,21 +40,22 @@ const Modal = styled.div`
   `;
 
 
-const TimeOutModal = ({ timeOutModal, setTime, breakInput, setIsActive, timeOutToggler }) => {
+const TimeOutModal = ({ timeOutModal, setTime, breakInput, setIsActive, timeOutToggler, focus, setFocus }) => {
     function startBreak() {
-        setTime(breakInput);
+        setTime(breakInput * 60);
         setIsActive(true);
         timeOutToggler();
+        setFocus(false)
         // change background
       }
 
 
     return (
-        <Modal className={timeOutModal ? "hide" : "show"} id="modal">
+        <Modal className={timeOutModal ? "show" : "hide"} id="modal">
             <h3>Well Focused!</h3>
             <button className="shortBreak" onClick={startBreak}>Short break</button>
             {/* <button>Long break</button> */}
-            <button className="startSession">Start new Focus Session</button>
+            <button className="startSession" onClick={startBreak}>Start new Focus Session</button>
         </Modal>
     );
 }

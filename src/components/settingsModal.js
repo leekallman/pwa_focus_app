@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from "styled-components";
 
 const Modal = styled.div`
 background: #fff;
 background-size: cover;
 width: 100vw;
-height: 50vh;
+height: 30vh;
 border-radius: 20px 20px 0 0;
 position:absolute;
 bottom:0;
@@ -41,20 +41,12 @@ const SettingsModal = ({ modal, handleChange, handleBreak, focusInput, breakInpu
         <Modal className={modal ? "show" : "hide"} id="modal">
             <ul>
                 <li>
-                    <h3>Focus session</h3>
+                    <h3>Focus Session</h3>
                     <input min={1} type="number" onChange={handleChange} value={focusInput} />
                 </li>
                 <li>
-                    <h3>Short break</h3>
+                    <h3>Break Session</h3>
                     <input min={1} type="number" onChange={handleBreak} value={breakInput} />
-                </li>
-                {/* <li>
-        <h3>Long break</h3>
-        <input min={1} type="number" onChange={handleChange} value={focusInput}/>
-        </li> */}
-                <li>
-                    <h3>Sessions until Long break</h3>
-                    <input min={1} defaultValue={3} type="number" />
                 </li>
             </ul>
         </Modal>

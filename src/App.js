@@ -5,9 +5,8 @@ import SettingsBtn from './components/settingsBtn.js';
 import SettingsModal from './components/settingsModal.js';
 import TimeOutModal from './components/timeOutModal.js';
 import './App.css';
-// import bgFocus from './assets/bg-focus.png';
-// import bgBreak from './assets/bg-break.png';
 import timeOutAlarm from './assets/bell.mp3'
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
 const alarm = new Audio(timeOutAlarm)
 alarm.volume = 0.6
@@ -39,41 +38,73 @@ const TimerWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  
+
   .timer{
-    height: 70vh;
     display: flex;
     align-items: center;
-    font-size: 60px;
   }
-  .start{
-    margin-right: 5px;
+
+  .black{
+    background:#000;
+    border-radius:50% !important;
+    height:200px !important;
+    width:200px !important;
   }
+  .value{
+    font-size: 50px;
+    margin:auto;
+  }
+
+  .actions, .timeLabel{
+  margin:5vh auto;
+  }
+
+  .start, .pause{
+    margin-right: 10px;
+  }
+
+  .pause{
+    background: none;
+    color:#000;
+  }
+
+
   `
 const Button = styled.button`
   align-items: center;
   background: #000;
   padding: 10px 35px;
-  border: none;
+  border: solid 1px #000;
   border-radius: 50px;
+  transition: all 0.1s ease-in-out;
+  cursor:pointer;
+
+  // &:hover {
+  //   background: none;
+  //   color: #000;
+  // }
 `
 function formatTime(sec) {
-  const minutes = Math.floor(sec / 60);
+  let minutes = Math.floor(sec / 60);
   let seconds = sec % 60;
   if (seconds < 10) {
     seconds = `0${seconds} `;
+  }
+  if (minutes < 10) {
+    minutes = `0${minutes} `
   }
   return `${minutes}: ${seconds} `;
 }
 
 function App() {
   // initial Session time
-  let focusSessionDuration = 25
+  let focusSessionDuration = 1
   let breakSessionDuration = 5
 
   // useState
   const [focusInput, setFocusInput] = useState(focusSessionDuration);
   const [breakInput, setBreakInput] = useState(breakSessionDuration);
+  // const [remainingTime, setRemaningTime] = useState(focusSessionDuration);
 
   const [focus, setFocus] = useState(true);
   const [time, setTime] = useState(focusInput * 60);
@@ -87,10 +118,15 @@ function App() {
   const handleChange = (e) => {
     setFocusInput(e.target.value);
     setTime(e.target.value * 60);
+    // setRemaningTime(e.target.value)
   }
   const handleBreak = (e) => {
     setBreakInput(e.target.value);
   }
+
+  // function remainingTime() {
+  //   setTime(focusInput * 60);
+  // }
 
   const modalToggler = () => {
     setModal(prev => !prev)
@@ -101,9 +137,9 @@ function App() {
   }
 
   function reset() {
-    setTime(focusInput * 60);
     setIsActive(false);
     setFocus(true);
+    setTime(focusInput * 60);
   }
 
   const timeOutToggler = () => {
@@ -144,29 +180,43 @@ function App() {
     // TIMEOUT BREAK SESSION
     else if (time === 0 && focus === false) {
       clearInterval(interval);
-      reset();
+      setTime(focusInput * 60);
+      setIsActive(false);
+      setFocus(true);
       alarm.play()
     }
 
     return () => clearInterval(interval);
-  }, [isActive, time, setTime, breakInput, focus, reset]);
+  }, [isActive, time, setTime, breakInput, focus, focusInput]);
 
 
   return (
     <AppContainer id="App" className={focus ? "focus" : "break"}>
       <GlobalStyles />
       <TimerWrapper id="timerWrapper" onClick={closeModal}>
-        <div>{focus ? "Focus Time" : "Break Time"}</div>
-        <div className="timer">{formatTime(time)}</div>
-
+        <div className="timeLabel">{focus ? "Focus Time" : "Break Time"}</div>
+        <div className="timer-wrapper">
+          <CountdownCircleTimer
+            isPlaying={isActive ? true : false}
+            duration={time}
+            // initialRemainingTime={remainingTime*60}
+            colors={"#000"}
+            strokeWidth={3}
+            strokeLinecap={"square"}
+            size={250}
+            renderAriaTime
+          >
+            <div className={`timer ${isActive ? "black" : "none"}`}>
+              <div className="value">{formatTime(time)}</div>
+            </div>
+          </CountdownCircleTimer>
+        </div>
         <div className="actions">
-          <Button className="button start" onClick={start}>
+          <Button className={`button ${isActive ? "pause" : "start"}`} onClick={start}>
             {isActive ? 'Pause' : 'Start'}
           </Button>
 
-          <Button className="button reset" onClick={reset}>
-            Reset
-          </Button>
+          <Button className="button reset" onClick={reset}>Reset</Button>
         </div>
       </TimerWrapper>
 
@@ -187,6 +237,7 @@ function App() {
         setIsActive={setIsActive}
         focus={focus}
         setFocus={setFocus}
+        reset={reset}
       />
     </AppContainer >
   );

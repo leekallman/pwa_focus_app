@@ -2,7 +2,7 @@ import React from 'react';
 import styled from "styled-components";
 import settings from '../assets/settings.svg';
 
-const settingsBtn = ({ modalToggler }) => {
+const SettingsBtn = ({ modalToggler }) => {
     const Button = styled.button`
     position:absolute;
     bottom:30px;
@@ -19,4 +19,4 @@ const settingsBtn = ({ modalToggler }) => {
     );
 }
 
-export default settingsBtn;
+export default SettingsBtn;

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import GlobalStyles from './globalStyles.js';
-import SettingsBtn from './components/settingsBtn.js';
-import SettingsModal from './components/settingsModal.js';
-import TimeOutModal from './components/timeOutModal.js';
+import SettingsBtn from './components/SettingsBtn.js';
+import SettingsModal from './components/SettingsModal.js';
+import CountdownAnimation from './components/CountdownAnimation.js';
+import TimeOutModal from './components/TimeOutModal.js';
 import './App.css';
 import timeOutAlarm from './assets/bell.mp3'
-import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
 const alarm = new Audio(timeOutAlarm)
 alarm.volume = 0.6
@@ -102,6 +102,14 @@ function App() {
   let breakSessionDuration = 5
 
   // useState
+const [newTimer, setNewTimer] = useState({
+  work: 0.1,
+  short: 0.2,
+  long: 1,
+  active: "work"
+})
+
+
   const [focusInput, setFocusInput] = useState(focusSessionDuration);
   const [breakInput, setBreakInput] = useState(breakSessionDuration);
   // const [remainingTime, setRemaningTime] = useState(focusSessionDuration);
@@ -115,31 +123,41 @@ function App() {
 
 
   // functions
-  const handleChange = (e) => {
-    setFocusInput(e.target.value);
-    setTime(e.target.value * 60);
-    // setRemaningTime(e.target.value)
-  }
-  const handleBreak = (e) => {
-    setBreakInput(e.target.value);
-  }
+  const handleChange = (input) => {
+    const{name, value} = input.target
+    switch(name){
+      case 'focus':
+        setNewTimer({
+          ...newTimer,
+          work: parseInt(value)
+        })
+      break;
+      case 'shortBreak':
+        setNewTimer({
+        ...newTimer,
+        short: parseInt(value)
+        })
+      break;
+      case 'longBreak':
+        setNewTimer({
+        ...newTimer,
+        long: parseInt(value)
+        })
+      break;
+      
 
-  // function remainingTime() {
-  //   setTime(focusInput * 60);
-  // }
+      default:
+        break;
+
+    }
+  }
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    // updateExecute(newTimer)
+  }
 
   const modalToggler = () => {
     setModal(prev => !prev)
-  }
-
-  function start() {
-    setIsActive(!isActive);
-  }
-
-  function reset() {
-    setIsActive(false);
-    setFocus(true);
-    setTime(focusInput * 60);
   }
 
   const timeOutToggler = () => {
@@ -196,20 +214,7 @@ function App() {
       <TimerWrapper id="timerWrapper" onClick={closeModal}>
         <div className="timeLabel">{focus ? "Focus Time" : "Break Time"}</div>
         <div className="timer-wrapper">
-          <CountdownCircleTimer
-            isPlaying={isActive ? true : false}
-            duration={time}
-            // initialRemainingTime={remainingTime*60}
-            colors={"#000"}
-            strokeWidth={3}
-            strokeLinecap={"square"}
-            size={250}
-            renderAriaTime
-          >
-            <div className={`timer ${isActive ? "black" : "none"}`}>
-              <div className="value">{formatTime(time)}</div>
-            </div>
-          </CountdownCircleTimer>
+          <CountdownAnimation />
         </div>
         <div className="actions">
           <Button className={`button ${isActive ? "pause" : "start"}`} onClick={start}>
@@ -223,21 +228,21 @@ function App() {
       <SettingsBtn modalToggler={modalToggler} />
       <SettingsModal
         modal={modal}
-        focusInput={focusInput}
-        breakInput={breakInput}
         handleChange={handleChange}
-        handleBreak={handleBreak}
+        handleSubmit={handleSubmit}
+        newTimer={newTimer}
+        setNewTimer={setNewTimer}
       />
       <TimeOutModal
         timeOutModal={timeOutModal}
         timeOutToggler={timeOutToggler}
-        setTime={setTime}
-        breakInput={breakInput}
         isActive={isActive}
         setIsActive={setIsActive}
         focus={focus}
         setFocus={setFocus}
         reset={reset}
+        newTimer={newTimer}
+        setNewTimer={setNewTimer}
       />
     </AppContainer >
   );

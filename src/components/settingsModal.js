@@ -1,4 +1,5 @@
 import React from 'react';
+import SubmitButton from './SubmitButton.js';
 import styled from "styled-components";
 
 const Modal = styled.div`
@@ -36,19 +37,24 @@ input{
 }
 `;
 
-const SettingsModal = ({ modal, handleChange, handleBreak, focusInput, breakInput }) => {
+const SettingsModal = ({ modal, handleChange, handleSubmit, newTimer, setNewTimer }) => {
     return (
         <Modal className={modal ? "show" : "hide"} id="modal">
             <ul>
                 <li>
                     <h3>Focus Session</h3>
-                    <input min={1} type="number" onChange={handleChange} value={focusInput} />
+                    <input className="input" name="focus" type="number" onChange={handleChange} value={newTimer.focus} />
                 </li>
                 <li>
-                    <h3>Break Session</h3>
-                    <input min={1} type="number" onChange={handleBreak} value={breakInput} />
+                    <h3>Short Break</h3>
+                    <input className="input" name="shortBreak" type="number" onChange={handleChange} value={newTimer.short} />
+                </li>
+                <li>
+                <h3>Long Break</h3>
+                    <input className="input" name="longBreak" type="number" onChange={handleChange} value={newTimer.long} />
                 </li>
             </ul>
+            <SubmitButton title="Set timer" _callback={handleSubmit} />
         </Modal>
     );
 }

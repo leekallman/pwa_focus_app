@@ -14,7 +14,7 @@ alarm.volume = 0.6
 const AppContainer = styled.div`
 .hide{
   transform: translate(0, 100%);
-  display: none;
+  display: none !important;
   animation: moveOut 0.5s;
 }
 @keyframes moveIn {
@@ -22,17 +22,17 @@ const AppContainer = styled.div`
   to {transform: translate(0, 0%);
     display: block}
   }
-  @keyframes moveOut {
-    0% {transform: translate(0, 0%)};
-    90% {transform: translate(0, 100%)}
-    100% {display: none}
-    
-  }
-  .show{
-    animation: moveIn 0.5s;
-    display: block;
-  }
-  `
+@keyframes moveOut {
+  0% {transform: translate(0, 0%)};
+  90% {transform: translate(0, 100%)}
+  100% {display: none}   
+}
+
+.show{
+  animation: moveIn 0.5s;
+  display: block;
+}
+`
 
 const TimerWrapper = styled.div`
   display: flex;
@@ -78,11 +78,6 @@ const Button = styled.button`
   border-radius: 50px;
   transition: all 0.1s ease-in-out;
   cursor:pointer;
-
-  // &:hover {
-  //   background: none;
-  //   color: #000;
-  // }
 `
 function formatTime(sec) {
   let minutes = Math.floor(sec / 60);
@@ -126,6 +121,7 @@ function App() {
 
   // function remainingTime() {
   //   setTime(focusInput * 60);
+  //   console.log(focusInput * 60)
   // }
 
   const modalToggler = () => {
@@ -199,7 +195,7 @@ function App() {
           <CountdownCircleTimer
             isPlaying={isActive ? true : false}
             duration={time}
-            // initialRemainingTime={remainingTime*60}
+            initialRemainingTime={time}
             colors={"#000"}
             strokeWidth={3}
             strokeLinecap={"square"}

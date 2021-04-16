@@ -104,6 +104,7 @@ function App() {
   const [focus, setFocus] = useState(true);
   const [time, setTime] = useState(focusInput * 60);
   const [isActive, setIsActive] = useState(false);
+  const [key, setKey] = useState(0);
 
   const [modal, setModal] = useState(false);
   const [timeOutModal, setTimeOutModal] = useState(false);
@@ -113,7 +114,7 @@ function App() {
   const handleChange = (e) => {
     setFocusInput(e.target.value);
     setTime(e.target.value * 60);
-    // setRemaningTime(e.target.value)
+    setKey(e.target.value)
   }
   const handleBreak = (e) => {
     setBreakInput(e.target.value);
@@ -135,7 +136,8 @@ function App() {
   function reset() {
     setIsActive(false);
     setFocus(true);
-    setTime(focusInput * 60);
+    setTime(focusInput*60);
+    setKey(focusInput);
   }
 
   const timeOutToggler = () => {
@@ -171,7 +173,8 @@ function App() {
       setFocus(!focus)
       setTime(breakInput * 60)
       setModal(false);
-      alarm.play()
+      alarm.play();
+      setKey(breakInput * 60);
     }
     // TIMEOUT BREAK SESSION
     else if (time === 0 && focus === false) {
@@ -180,6 +183,8 @@ function App() {
       setIsActive(false);
       setFocus(true);
       alarm.play()
+      setKey(setFocusInput);
+      
     }
 
     return () => clearInterval(interval);
@@ -195,12 +200,12 @@ function App() {
           <CountdownCircleTimer
             isPlaying={isActive ? true : false}
             duration={time}
-            initialRemainingTime={time}
             colors={"#000"}
             strokeWidth={3}
             strokeLinecap={"square"}
             size={250}
             renderAriaTime
+            key={key}
           >
             <div className={`timer ${isActive ? "black" : "none"}`}>
               <div className="value">{formatTime(time)}</div>
@@ -233,7 +238,9 @@ function App() {
         setIsActive={setIsActive}
         focus={focus}
         setFocus={setFocus}
-        reset={reset}
+        focusInput={focusInput}
+        setFocusInput={setFocusInput}
+        setKey={setKey}
       />
     </AppContainer >
   );

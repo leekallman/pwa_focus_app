@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import GlobalStyles from './globalStyles.js';
 import SettingsBtn from './components/SettingsBtn.js';
@@ -7,6 +7,7 @@ import CountdownAnimation from './components/CountdownAnimation.js';
 import TimeOutModal from './components/TimeOutModal.js';
 import './App.css';
 import timeOutAlarm from './assets/bell.mp3'
+import { SettingsContext } from "./context/SettingsContext.js";
 
 const alarm = new Audio(timeOutAlarm)
 alarm.volume = 0.6
@@ -101,22 +102,25 @@ function App() {
   let focusSessionDuration = 1
   let breakSessionDuration = 5
 
+  const {updateExecute} = useContext(SettingsContext);
+  const {focus} = useContext(SettingsContext)
+
   // useState
 const [newTimer, setNewTimer] = useState({
   work: 0.1,
   short: 0.2,
   long: 1,
-  active: "work"
+  active: "focus"
 })
 
 
-  const [focusInput, setFocusInput] = useState(focusSessionDuration);
-  const [breakInput, setBreakInput] = useState(breakSessionDuration);
-  // const [remainingTime, setRemaningTime] = useState(focusSessionDuration);
+  // const [focusInput, setFocusInput] = useState(focusSessionDuration);
+  // const [breakInput, setBreakInput] = useState(breakSessionDuration);
+  // // const [remainingTime, setRemaningTime] = useState(focusSessionDuration);
 
-  const [focus, setFocus] = useState(true);
-  const [time, setTime] = useState(focusInput * 60);
-  const [isActive, setIsActive] = useState(false);
+  // const [focus, setFocus] = useState(true);
+  // const [time, setTime] = useState(focusInput * 60);
+  // const [isActive, setIsActive] = useState(false);
 
   const [modal, setModal] = useState(false);
   const [timeOutModal, setTimeOutModal] = useState(false);
@@ -153,7 +157,7 @@ const [newTimer, setNewTimer] = useState({
   }
   const handleSubmit = (e) => {
     e.preventDefault()
-    // updateExecute(newTimer)
+    updateExecute(newTimer)
   }
 
   const modalToggler = () => {

@@ -12,6 +12,9 @@ const alarm = new Audio(timeOutAlarm)
 alarm.volume = 0.6
 
 const AppContainer = styled.div`
+width:100vw;
+height:100vh;
+
 .hide{
   transform: translate(0, 100%);
   display: none !important;
@@ -99,7 +102,6 @@ function App() {
   // useState
   const [focusInput, setFocusInput] = useState(focusSessionDuration);
   const [breakInput, setBreakInput] = useState(breakSessionDuration);
-  // const [remainingTime, setRemaningTime] = useState(focusSessionDuration);
 
   const [focus, setFocus] = useState(true);
   const [time, setTime] = useState(focusInput * 60);
@@ -120,24 +122,9 @@ function App() {
     setBreakInput(e.target.value);
   }
 
-  // function remainingTime() {
-  //   setTime(focusInput * 60);
-  //   console.log(focusInput * 60)
-  // }
-
+  // modals
   const modalToggler = () => {
     setModal(prev => !prev)
-  }
-
-  function start() {
-    setIsActive(!isActive);
-  }
-
-  function reset() {
-    setIsActive(false);
-    setFocus(true);
-    setTime(focusInput*60);
-    setKey(focusInput);
   }
 
   const timeOutToggler = () => {
@@ -151,6 +138,18 @@ function App() {
     } else if (timeOutModal !== false && clicked === "timerWrapper") {
       setTimeOutModal(prev => !prev)
     }
+  }
+
+  // buttons
+  function start() {
+    setIsActive(!isActive);
+  }
+
+  function reset() {
+    setIsActive(false);
+    setFocus(true);
+    setTime(focusInput*60);
+    setKey(focusInput);
   }
 
   useEffect(() => {
@@ -171,20 +170,19 @@ function App() {
       clearInterval(interval);
       setTimeOutModal(true)
       setFocus(!focus)
-      setTime(breakInput * 60)
       setModal(false);
       alarm.play();
+      setTime(breakInput * 60)
       setKey(breakInput * 60);
     }
     // TIMEOUT BREAK SESSION
     else if (time === 0 && focus === false) {
       clearInterval(interval);
-      setTime(focusInput * 60);
       setIsActive(false);
       setFocus(true);
       alarm.play()
-      setKey(setFocusInput);
-      
+      setTime(focusInput * 60);
+      setKey(focusInput * 60);
     }
 
     return () => clearInterval(interval);

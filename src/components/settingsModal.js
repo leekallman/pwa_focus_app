@@ -5,7 +5,7 @@ const Modal = styled.div`
 background: #fff;
 background-size: cover;
 width: 100vw;
-height: 30vh;
+height: 35vh;
 border-radius: 20px 20px 0 0;
 position:absolute;
 bottom:0;
@@ -36,7 +36,7 @@ input{
 }
 `;
 
-const SettingsModal = ({ modal, handleChange, handleBreak, focusInput, breakInput }) => {
+const SettingsModal = ({ modal, handleChange, handleBreak, handleLongBreak, focusInput, breakInput, longBreakInput }) => {
     return (
         <Modal className={modal ? "show" : "hide"} id="modal">
             <ul>
@@ -45,8 +45,12 @@ const SettingsModal = ({ modal, handleChange, handleBreak, focusInput, breakInpu
                     <input min={1} type="number" onChange={handleChange} value={focusInput} />
                 </li>
                 <li>
-                    <h3>Break Session</h3>
+                    <h3>Short Break Session</h3>
                     <input min={1} type="number" onChange={handleBreak} value={breakInput} />
+                </li>
+                <li>
+                    <h3>Long Break Session</h3>
+                    <input min={1} type="number" onChange={handleLongBreak} value={longBreakInput} />
                 </li>
             </ul>
         </Modal>

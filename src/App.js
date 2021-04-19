@@ -98,10 +98,12 @@ function App() {
   // initial Session time
   let focusSessionDuration = 1
   let breakSessionDuration = 5
+  let longBreakSessionDuration = 15
 
   // useState
   const [focusInput, setFocusInput] = useState(focusSessionDuration);
   const [breakInput, setBreakInput] = useState(breakSessionDuration);
+  const [longBreakInput, setLongBreakInput] = useState(longBreakSessionDuration);
 
   const [focus, setFocus] = useState(true);
   const [time, setTime] = useState(focusInput * 60);
@@ -120,6 +122,10 @@ function App() {
   }
   const handleBreak = (e) => {
     setBreakInput(e.target.value);
+  }
+
+  const handleLongBreak = (e) => {
+    setLongBreakInput(e.target.value);
   }
 
   // modals
@@ -149,7 +155,7 @@ function App() {
     setIsActive(false);
     setFocus(true);
     setTime(focusInput*60);
-    setKey(focusInput);
+    setKey(focusInput*60);
   }
 
   useEffect(() => {
@@ -160,7 +166,7 @@ function App() {
         setTime(time => time - 1);
       }, 1000);
 
-      // PAUSE
+    // PAUSE
     } else if (!isActive && time > 0) {
       clearInterval(interval);
     }
@@ -224,14 +230,17 @@ function App() {
         modal={modal}
         focusInput={focusInput}
         breakInput={breakInput}
+        longBreakInput={longBreakInput}
         handleChange={handleChange}
         handleBreak={handleBreak}
+        handleLongBreak={handleLongBreak}
       />
       <TimeOutModal
         timeOutModal={timeOutModal}
         timeOutToggler={timeOutToggler}
         setTime={setTime}
         breakInput={breakInput}
+        longBreakInput={longBreakInput}
         isActive={isActive}
         setIsActive={setIsActive}
         focus={focus}

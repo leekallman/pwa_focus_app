@@ -70,13 +70,20 @@ const Modal = styled.div`
   )
   
 
-const TimeOutModal = ({ timeOutModal, setTime, breakInput, setIsActive, timeOutToggler, focusInput, setFocus, setKey }) => {
+const TimeOutModal = ({ timeOutModal, setTime, breakInput, longBreakInput, setIsActive, timeOutToggler, focusInput, setFocus, setKey }) => {
     function startBreak() {
         setTime(breakInput * 60);
         setIsActive(true);
         timeOutToggler();
         setFocus(false);
     }
+    function startLongBreak() {
+        setTime(longBreakInput * 60);
+        setIsActive(true);
+        timeOutToggler();
+        setFocus(false);
+    }
+
     function restart(){
         timeOutToggler();
         setIsActive(false);
@@ -92,7 +99,7 @@ const TimeOutModal = ({ timeOutModal, setTime, breakInput, setIsActive, timeOutT
             <p>Take a break?</p>
             <div className="actions">
                 <button className="shortBreak" onClick={startBreak}>Short break</button>
-                <button className="longBreak" onClick={startBreak}>Long break</button>
+                <button className="longBreak" onClick={startLongBreak}>Long break</button>
             </div>
             <button className="startSession" onClick={restart}>Start new Focus Session</button>
         </Modal>

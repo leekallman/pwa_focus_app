@@ -36,21 +36,21 @@ input{
 }
 `;
 
-const SettingsModal = ({ modal, handleChange, handleBreak, handleLongBreak, focusInput, breakInput, longBreakInput }) => {
+const SettingsModal = ({ modal, handleChange, handleBreak, handleLongBreak, timer }) => {
     return (
         <Modal className={modal ? "show" : "hide"} id="modal">
             <ul>
                 <li>
                     <h3>Focus Session</h3>
-                    <input min={1} type="number" onChange={handleChange} value={focusInput} />
+                    <input min={1} type="number" onChange={handleChange} value={timer.focusInput} />
                 </li>
                 <li>
                     <h3>Short Break Session</h3>
-                    <input min={1} type="number" onChange={handleBreak} value={breakInput} />
+                    <input min={1} type="number" onChange={handleBreak} value={timer.breakInput} />
                 </li>
                 <li>
                     <h3>Long Break Session</h3>
-                    <input min={1} type="number" onChange={handleLongBreak} value={longBreakInput} />
+                    <input min={1} type="number" onChange={handleLongBreak} value={timer.longBreakInput} />
                 </li>
             </ul>
         </Modal>

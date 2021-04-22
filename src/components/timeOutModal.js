@@ -70,26 +70,35 @@ const Modal = styled.div`
   )
   
 
-const TimeOutModal = ({ timeOutModal, setTime, breakInput, longBreakInput, setIsActive, timeOutToggler, focusInput, setFocus, setKey }) => {
+const TimeOutModal = ({ timeOutModal, timeOutToggler, timer, setTimer, toggleTimer }) => {
     function startBreak() {
-        setTime(breakInput * 60);
-        setIsActive(true);
+        setTimer({
+            ...timer,
+            focus: false,
+            time: timer.breakInput*60,
+            isActive: true
+          })
         timeOutToggler();
-        setFocus(false);
     }
     function startLongBreak() {
-        setTime(longBreakInput * 60);
-        setIsActive(true);
+        setTimer({
+            ...timer,
+            focus: false,
+            time: timer.longBreakInput*60,
+            isActive: true
+          })
         timeOutToggler();
-        setFocus(false);
     }
 
     function restart(){
+        setTimer({
+            ...timer,
+            focus: true,
+            time: timer.focusInput*60,
+            isActive: false,
+            key: timer.focusInput*60
+          })
         timeOutToggler();
-        setIsActive(false);
-        setFocus(true);
-        setTime(focusInput*60);
-        setKey(focusInput);
     }
 
 

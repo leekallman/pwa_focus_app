@@ -1,0 +1,21 @@
+{
+    "short_name": "PWA App",
+    "name": "PWA Focus App",
+    "icons": [
+        {
+            "src": "/images/logo.png",
+            "type": "image/png", 
+            "sizes": "512x512",
+            "purpose": "maskable"
+        },
+        {
+            "src": "/images/logo_1024.png",
+            "type": "image/png", 
+            "sizes": "1024x1024"
+        }
+    ],
+    "start_url": ".",
+    "display": "standalone",
+    "theme_color": "#000000",
+    "background_color": "#ffffff"
+}
